@@ -77,7 +77,6 @@ class VL6180X
       FIRMWARE__RESULT_SCALER               = 0x120,
       I2C_SLAVE__DEVICE_ADDRESS             = 0x212,
       INTERLEAVED_MODE_ENABLE               = 0x2A3,
-
     };
 
     uint8_t last_status; // status of last I2C transmission
@@ -102,7 +101,7 @@ class VL6180X
 
     void startRangeContinuous(uint16_t period = 100);
     void startAmbientContinuous(uint16_t period = 500);
-    void startInterleavedContinuous(uint16_t period);
+    void startInterleavedContinuous(uint16_t period = 500);
     void stopContinuous();
 
     uint8_t readRangeContinuous();
