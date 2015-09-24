@@ -1,7 +1,7 @@
 #include <VL6180X.h>
 #include <Wire.h>
 
-// Defines ////////////////////////////////////////////////////////////////
+// Defines /////////////////////////////////////////////////////////////////////
 
 // The Arduino two-wire interface uses a 7-bit number for the address,
 // and sets the last bit correctly based on reads and writes
@@ -247,21 +247,22 @@ void VL6180X::startInterleavedContinuous(uint16_t period)
   int16_t period_reg = (int16_t)(period / 10) - 1;
   period_reg = constrain(period_reg, 0, 254);
 
-  writeReg(INTERLEAVED_MODE_ENABLE, 1);
+  writeReg(INTERLEAVED_MODE__ENABLE, 1);
   writeReg(SYSALS__INTERMEASUREMENT_PERIOD, period_reg);
   writeReg(SYSALS__START, 0x03);
 }
 
-// Stops continuous mode
+// Stops continuous mode. This will actually start a single measurement of range
+// and/or ambient light if continuous mode is not active, so it's a good idea to
+// wait a few hundred ms after calling this function to let that complete
+// before starting continuous mode again or taking a reading.
 void VL6180X::stopContinuous()
 {
-  // This will actually start a single measurement of range and/or ambient light
-  // if continuous mode is not active, but that shouldn't have any negative
-  // effects.
+
   writeReg(SYSRANGE__START, 0x01);
   writeReg(SYSALS__START, 0x01);
 
-  writeReg(INTERLEAVED_MODE_ENABLE, 0);
+  writeReg(INTERLEAVED_MODE__ENABLE, 0);
 }
 
 // Returns a range reading when continuous mode is activated

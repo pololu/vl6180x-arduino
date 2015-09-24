@@ -76,7 +76,7 @@ class VL6180X
       FIRMWARE__BOOTUP                      = 0x119,
       FIRMWARE__RESULT_SCALER               = 0x120,
       I2C_SLAVE__DEVICE_ADDRESS             = 0x212,
-      INTERLEAVED_MODE_ENABLE               = 0x2A3,
+      INTERLEAVED_MODE__ENABLE               = 0x2A3,
     };
 
     uint8_t last_status; // status of last I2C transmission
