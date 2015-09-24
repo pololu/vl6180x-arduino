@@ -269,10 +269,10 @@ void VL6180X::stopContinuous()
 // range measurement)
 uint8_t VL6180X::readRangeContinuous()
 {
-  unsigned int millis_start = millis();
+  uint16_t millis_start = millis();
   while ((readReg(RESULT__INTERRUPT_STATUS_GPIO) & 0x04) == 0)
   {
-    if (io_timeout > 0 && ((unsigned int)millis() - millis_start) > io_timeout)
+    if (io_timeout > 0 && ((uint16_t)millis() - millis_start) > io_timeout)
     {
       did_timeout = true;
       return 255;
@@ -290,10 +290,10 @@ uint8_t VL6180X::readRangeContinuous()
 // ambient light measurement)
 uint16_t VL6180X::readAmbientContinuous()
 {
-  unsigned int millis_start = millis();
+  uint16_t millis_start = millis();
   while ((readReg(RESULT__INTERRUPT_STATUS_GPIO) & 0x20) == 0)
   {
-    if (io_timeout > 0 && ((unsigned int)millis() - millis_start) > io_timeout)
+    if (io_timeout > 0 && ((uint16_t)millis() - millis_start) > io_timeout)
     {
       did_timeout = true;
       return 0;
