@@ -71,7 +71,7 @@ Several example sketches are available that show how to use the library. You can
   Constructor.
 
 * `void setAddress(uint8_t new_addr)`<br>
-  Changes the I&sup2C slave device address of the VL6180X to the given value (7-bit).
+  Changes the I&sup2;C slave device address of the VL6180X to the given value (7-bit).
 
 * `void init(void)`<br>
   Loads required settings onto the VL6180X to initialize the sensor.
