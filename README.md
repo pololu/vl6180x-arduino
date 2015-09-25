@@ -65,7 +65,7 @@ Several example sketches are available that show how to use the library. You can
 ## Library reference
 
 * `uint8_t last_status`<br>
-  The status of the last I&sup2;C transmission. See the [`Wire.endTransmission()` documentation](http://arduino.cc/en/Reference/WireEndTransmission) for return values.
+  The status of the last I&sup2;C write transmission. See the [`Wire.endTransmission()` documentation](http://arduino.cc/en/Reference/WireEndTransmission) for return values.
 
 * `VL6180X(void)`<br>
   Constructor.
