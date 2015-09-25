@@ -88,7 +88,7 @@ Several example sketches are available that show how to use the library. You can
 * `void writeReg16Bit(uint16_t reg, uint16_t value)`<br>
   Writes a 16-bit sensor register with the given value.
 
-* `void writeReg32Bit(uint32_t reg, uint32_t value)`<br>
+* `void writeReg32Bit(uint16_t reg, uint32_t value)`<br>
   Writes a 32-bit sensor register with the given value.
 
 * `uint8_t readReg(uint16_t reg)`<br>
