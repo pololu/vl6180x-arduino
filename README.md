@@ -101,7 +101,7 @@ Several example sketches are available that show how to use the library. You can
   Reads a 32-bit sensor register and returns the value read.
 
 * `uint8_t readRangeSingle(void)`<br>
-  Performs a single-shot ranging measurement and returns the reading.
+  Performs a single-shot ranging measurement and returns the reading (distance in millimeters).
 
 * `uint16_t readAmbientSingle(void)`<br>
   Performs a single-shot ambient light measurement and returns the reading.
@@ -123,7 +123,7 @@ Several example sketches are available that show how to use the library. You can
   Stops continuous mode.
 
 * `uint8_t readRangeContinuous(void)`<br>
-  Returns a range reading when continuous mode is active.
+  Returns a range reading when continuous mode is active (distance in millimeters).
 
 * `uint16_t readAmbientContinuous(void)`<br>
   Returns an ambient light reading when continuous mode is active.
