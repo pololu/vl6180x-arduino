@@ -1,7 +1,7 @@
 # VL6180X library for Arduino
 
-Version: 1.0.0<br>
-Release date: 2015 September 24<br>
+Version: 1.0.1<br>
+Release date: 2016 March 14<br>
 [www.pololu.com](https://www.pololu.com/)
 
 ## Summary
@@ -139,4 +139,5 @@ Several example sketches are available that show how to use the library. You can
 
 ## Version history
 
+* 1.0.1 (2016 Mar 14): Added missing `Serial.begin()` to examples and changed `configureDefault()` to reset some additional registers to power-on defaults.
 * 1.0.0 (2015 Sep 24): Original release.
