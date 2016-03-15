@@ -87,6 +87,7 @@ void VL6180X::configureDefault(void)
   // sysrange__vhv_recalibrate = 1 (manually trigger a VHV recalibration)
   writeReg(SYSRANGE__VHV_RECALIBRATE, 0x01);
 
+
   // "Optional: Public registers"
 
   // sysrange__intermeasurement_period = 9 (100 ms)
@@ -97,6 +98,15 @@ void VL6180X::configureDefault(void)
 
   // als_int_mode = 4 (ALS new sample ready interrupt); range_int_mode = 4 (range new sample ready interrupt)
   writeReg(SYSTEM__INTERRUPT_CONFIG_GPIO, 0x24);
+
+
+  // Reset other settings to power-on defaults
+
+  // sysrange__max_convergence_time = 49 (49 ms)
+  writeReg(VL6180X::SYSRANGE__MAX_CONVERGENCE_TIME, 0x31);
+
+  // disable interleaved mode
+  writeReg(INTERLEAVED_MODE__ENABLE, 0);
 }
 
 // Writes an 8-bit register
