@@ -31,6 +31,7 @@ VL6180X sensor;
 
 void setup()
 {
+  Serial.begin(9600);
   Wire.begin();
 
   sensor.init();
