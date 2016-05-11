@@ -7,14 +7,18 @@
 // and sets the last bit correctly based on reads and writes
 #define ADDRESS_DEFAULT 0b0101001
 
+// RANGE_SCALER values for 1x, 2x, 3x scaling - see STSW-IMG003 core/src/vl6180x_api.c (ScalerLookUP[])
+uint16_t const ScalerValues[] = {0, 253, 127, 84};
+
 // Constructors ////////////////////////////////////////////////////////////////
 
 VL6180X::VL6180X(void)
+  : address(ADDRESS_DEFAULT)
+  , scaling(0)
+  , ptp_offset(0)
+  , io_timeout(0) // no timeout
+  , did_timeout(false)
 {
-  address = ADDRESS_DEFAULT;
-
-  io_timeout = 0;  // 0 = no timeout
-  did_timeout = false;
 }
 
 // Public Methods //////////////////////////////////////////////////////////////
@@ -29,36 +33,61 @@ void VL6180X::setAddress(uint8_t new_addr)
 // "Mandatory : private registers"
 void VL6180X::init()
 {
-  writeReg(0x207, 0x01);
-  writeReg(0x208, 0x01);
-  writeReg(0x096, 0x00);
-  writeReg(0x097, 0xFD);
-  writeReg(0x0E3, 0x00);
-  writeReg(0x0E4, 0x04);
-  writeReg(0x0E5, 0x02);
-  writeReg(0x0E6, 0x01);
-  writeReg(0x0E7, 0x03);
-  writeReg(0x0F5, 0x02);
-  writeReg(0x0D9, 0x05);
-  writeReg(0x0DB, 0xCE);
-  writeReg(0x0DC, 0x03);
-  writeReg(0x0DD, 0xF8);
-  writeReg(0x09F, 0x00);
-  writeReg(0x0A3, 0x3C);
-  writeReg(0x0B7, 0x00);
-  writeReg(0x0BB, 0x3C);
-  writeReg(0x0B2, 0x09);
-  writeReg(0x0CA, 0x09);
-  writeReg(0x198, 0x01);
-  writeReg(0x1B0, 0x17);
-  writeReg(0x1AD, 0x00);
-  writeReg(0x0FF, 0x05);
-  writeReg(0x100, 0x05);
-  writeReg(0x199, 0x05);
-  writeReg(0x1A6, 0x1B);
-  writeReg(0x1AC, 0x3E);
-  writeReg(0x1A7, 0x1F);
-  writeReg(0x030, 0x00);
+  // Store part-to-part range offset so it can be adjusted if scaling is changed
+  ptp_offset = readReg(SYSRANGE__PART_TO_PART_RANGE_OFFSET);
+
+  if (readReg(SYSTEM__FRESH_OUT_OF_RESET) == 1)
+  {
+    writeReg(0x207, 0x01);
+    writeReg(0x208, 0x01);
+    writeReg(0x096, 0x00);
+    writeReg(0x097, 0xFD); // RANGE_SCALER = 253
+    writeReg(0x0E3, 0x00);
+    writeReg(0x0E4, 0x04);
+    writeReg(0x0E5, 0x02);
+    writeReg(0x0E6, 0x01);
+    writeReg(0x0E7, 0x03);
+    writeReg(0x0F5, 0x02);
+    writeReg(0x0D9, 0x05);
+    writeReg(0x0DB, 0xCE);
+    writeReg(0x0DC, 0x03);
+    writeReg(0x0DD, 0xF8);
+    writeReg(0x09F, 0x00);
+    writeReg(0x0A3, 0x3C);
+    writeReg(0x0B7, 0x00);
+    writeReg(0x0BB, 0x3C);
+    writeReg(0x0B2, 0x09);
+    writeReg(0x0CA, 0x09);
+    writeReg(0x198, 0x01);
+    writeReg(0x1B0, 0x17);
+    writeReg(0x1AD, 0x00);
+    writeReg(0x0FF, 0x05);
+    writeReg(0x100, 0x05);
+    writeReg(0x199, 0x05);
+    writeReg(0x1A6, 0x1B);
+    writeReg(0x1AC, 0x3E);
+    writeReg(0x1A7, 0x1F);
+    writeReg(0x030, 0x00);
+
+    writeReg(SYSTEM__FRESH_OUT_OF_RESET, 0);
+  }
+  else
+  {
+    // Sensor has already been initialized, so try to get scaling settings by
+    // reading registers.
+
+    uint16_t s = readReg16Bit(RANGE_SCALER);
+
+    if      (s == ScalerValues[3]) { scaling = 3; }
+    else if (s == ScalerValues[2]) { scaling = 2; }
+    else                           { scaling = 1; }
+
+    // Adjust the part-to-part range offset value read earlier to account for
+    // existing scaling. If the sensor was already in 2x or 3x scaling mode,
+    // precision will be lost calculating the original (1x) offset, but this can
+    // be resolved by resetting the sensor and Arduino again.
+    ptp_offset *= scaling;
+  }
 }
 
 // Configure some settings for the sensor's default behavior from AN4545 -
@@ -198,6 +227,29 @@ uint32_t VL6180X::readReg32Bit(uint16_t reg)
   return value;
 }
 
+void VL6180X::setScaling(uint8_t new_scaling)
+{
+  uint8_t const DefaultCrosstalkValidHeight = 20;
+
+  // do nothing if scaling value is invalid
+  if (new_scaling < 1 || new_scaling > 3) { return; }
+
+  scaling = new_scaling;
+  writeReg16Bit(RANGE_SCALER, ScalerValues[scaling]);
+
+  // apply scaling on part-to-part offset
+  writeReg(VL6180X::SYSRANGE__PART_TO_PART_RANGE_OFFSET, ptp_offset / scaling);
+
+  // apply scaling on CrossTalkValidHeight
+  writeReg(VL6180X::SYSRANGE__CROSSTALK_VALID_HEIGHT, DefaultCrosstalkValidHeight / scaling);
+
+  // This function does not apply scaling to RANGE_IGNORE_VALID_HEIGHT.
+
+  // enable early convergence estimate only at 1x scaling
+  uint8_t rce = readReg(VL6180X::SYSRANGE__RANGE_CHECK_ENABLES);
+  writeReg(VL6180X::SYSRANGE__RANGE_CHECK_ENABLES, (rce & 0xFE) | (scaling == 1));
+}
+
 // Performs a single-shot ranging measurement
 uint8_t VL6180X::readRangeSingle()
 {
@@ -324,14 +376,4 @@ bool VL6180X::timeoutOccurred()
   bool tmp = did_timeout;
   did_timeout = false;
   return tmp;
-}
-
-void VL6180X::setTimeout(uint16_t timeout)
-{
-  io_timeout = timeout;
-}
-
-uint16_t VL6180X::getTimeout()
-{
-  return io_timeout;
 }

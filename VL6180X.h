@@ -72,11 +72,13 @@ class VL6180X
       RESULT__RANGE_RETURN_CONV_TIME        = 0x07C, // 32-bit
       RESULT__RANGE_REFERENCE_CONV_TIME     = 0x080, // 32-bit
 
+      RANGE_SCALER                          = 0x096, // 16-bit - see STSW-IMG003 core/inc/vl6180x_def.h
+
       READOUT__AVERAGING_SAMPLE_PERIOD      = 0x10A,
       FIRMWARE__BOOTUP                      = 0x119,
       FIRMWARE__RESULT_SCALER               = 0x120,
       I2C_SLAVE__DEVICE_ADDRESS             = 0x212,
-      INTERLEAVED_MODE__ENABLE               = 0x2A3,
+      INTERLEAVED_MODE__ENABLE              = 0x2A3,
     };
 
     uint8_t last_status; // status of last I2C transmission
@@ -96,6 +98,9 @@ class VL6180X
     uint16_t readReg16Bit(uint16_t reg);
     uint32_t readReg32Bit(uint16_t reg);
 
+    void setScaling(uint8_t new_scaling);
+    inline uint8_t getScaling() { return scaling; }
+
     uint8_t readRangeSingle();
     uint16_t readAmbientSingle();
 
@@ -107,12 +112,14 @@ class VL6180X
     uint8_t readRangeContinuous();
     uint16_t readAmbientContinuous();
 
-    void setTimeout(uint16_t timeout);
-    uint16_t getTimeout(void);
+    inline void setTimeout(uint16_t timeout) { io_timeout = timeout; }
+    inline uint16_t getTimeout(void) { return io_timeout; }
     bool timeoutOccurred(void);
 
   private:
     uint8_t address;
+    uint8_t scaling;
+    uint8_t ptp_offset;
     uint16_t io_timeout;
     bool did_timeout;
 };
