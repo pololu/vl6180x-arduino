@@ -1,7 +1,7 @@
 # VL6180X library for Arduino
 
-Version: 1.0.1<br>
-Release date: 2016 March 14<br>
+Version: 1.1.0<br>
+Release date: 2016 May 12<br>
 [www.pololu.com](https://www.pololu.com/)
 
 ## Summary
@@ -100,6 +100,12 @@ Several example sketches are available that show how to use the library. You can
 * `uint32_t readReg32Bit(uint16_t reg)`<br>
   Reads a 32-bit sensor register and returns the value read.
 
+* `void setScaling(uint8_t new_scaling)`<br>
+  Sets range scaling factor. The sensor uses 1x scaling by default, giving range measurements in units of mm. Increasing the scaling to 2x or 3x makes it give raw values in units of 2 mm or 3 mm instead. In other words, a bigger scaling factor increases the sensor's potential maximum range but reduces its resolution.
+
+* `uint8_t getScaling(void)`<br>
+  Returns the current range scaling factor.
+
 * `uint8_t readRangeSingle(void)`<br>
   Performs a single-shot ranging measurement and returns the reading (distance in millimeters).
 
@@ -139,5 +145,6 @@ Several example sketches are available that show how to use the library. You can
 
 ## Version history
 
+* 1.1.0 (2016 May 12): Added functions to set range scaling factor and example sketch to demonstrate scaling.
 * 1.0.1 (2016 Mar 14): Added missing `Serial.begin()` to examples and changed `configureDefault()` to reset some additional registers to power-on defaults.
 * 1.0.0 (2015 Sep 24): Original release.

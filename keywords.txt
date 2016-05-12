@@ -9,6 +9,8 @@ writeReg32Bit	KEYWORD2
 readReg	KEYWORD2
 readReg16Bit	KEYWORD2
 readReg32Bit	KEYWORD2
+setScaling	KEYWORD2
+getScaling	KEYWORD2
 readRangeSingle	KEYWORD2
 readAmbientSingle	KEYWORD2
 startRangeContinuous	KEYWORD2
