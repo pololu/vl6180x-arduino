@@ -38,6 +38,8 @@ void VL6180X::init()
 
   if (readReg(SYSTEM__FRESH_OUT_OF_RESET) == 1)
   {
+    scaling = 1;
+
     writeReg(0x207, 0x01);
     writeReg(0x208, 0x01);
     writeReg(0x096, 0x00);
@@ -227,6 +229,14 @@ uint32_t VL6180X::readReg32Bit(uint16_t reg)
   return value;
 }
 
+// Set range scaling factor. The sensor uses 1x scaling by default, giving range
+// measurements in units of mm. Increasing the scaling to 2x or 3x makes it give
+// raw values in units of 2 mm or 3 mm instead. In other words, a bigger scaling
+// factor increases the sensor's potential maximum range but reduces its
+// resolution.
+
+// Implemented using ST's VL6180X API as a reference (STSW-IMG003); see
+// VL6180x_UpscaleSetScaling() in vl6180x_api.c.
 void VL6180X::setScaling(uint8_t new_scaling)
 {
   uint8_t const DefaultCrosstalkValidHeight = 20;
