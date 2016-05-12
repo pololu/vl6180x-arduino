@@ -138,6 +138,9 @@ void VL6180X::configureDefault(void)
 
   // disable interleaved mode
   writeReg(INTERLEAVED_MODE__ENABLE, 0);
+
+  // reset range scaling factor to 1x
+  setScaling(1);
 }
 
 // Writes an 8-bit register
@@ -239,7 +242,7 @@ uint32_t VL6180X::readReg32Bit(uint16_t reg)
 // VL6180x_UpscaleSetScaling() in vl6180x_api.c.
 void VL6180X::setScaling(uint8_t new_scaling)
 {
-  uint8_t const DefaultCrosstalkValidHeight = 20;
+  uint8_t const DefaultCrosstalkValidHeight = 20; // default value of SYSRANGE__CROSSTALK_VALID_HEIGHT
 
   // do nothing if scaling value is invalid
   if (new_scaling < 1 || new_scaling > 3) { return; }
