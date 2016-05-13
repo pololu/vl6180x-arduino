@@ -8,7 +8,7 @@
 #define ADDRESS_DEFAULT 0b0101001
 
 // RANGE_SCALER values for 1x, 2x, 3x scaling - see STSW-IMG003 core/src/vl6180x_api.c (ScalerLookUP[])
-uint16_t const ScalerValues[] = {0, 253, 127, 84};
+static uint16_t const ScalerValues[] = {0, 253, 127, 84};
 
 // Constructors ////////////////////////////////////////////////////////////////
 
