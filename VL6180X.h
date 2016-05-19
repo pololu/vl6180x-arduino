@@ -87,7 +87,7 @@ class VL6180X
 
     void setAddress(uint8_t new_addr);
 
-    void init();
+    void init(void);
 
     void configureDefault(void);
 
@@ -99,18 +99,20 @@ class VL6180X
     uint32_t readReg32Bit(uint16_t reg);
 
     void setScaling(uint8_t new_scaling);
-    inline uint8_t getScaling() { return scaling; }
+    inline uint8_t getScaling(void) { return scaling; }
 
-    uint8_t readRangeSingle();
-    uint16_t readAmbientSingle();
+    uint8_t readRangeSingle(void);
+    inline uint16_t readRangeSingleMillimeters(void) { return (uint16_t)scaling * readRangeSingle(); }
+    uint16_t readAmbientSingle(void);
 
     void startRangeContinuous(uint16_t period = 100);
     void startAmbientContinuous(uint16_t period = 500);
     void startInterleavedContinuous(uint16_t period = 500);
     void stopContinuous();
 
-    uint8_t readRangeContinuous();
-    uint16_t readAmbientContinuous();
+    uint8_t readRangeContinuous(void);
+    inline uint16_t readRangeContinuousMillimeters(void) { return (uint16_t)scaling * readRangeContinuous(); }
+    uint16_t readAmbientContinuous(void);
 
     inline void setTimeout(uint16_t timeout) { io_timeout = timeout; }
     inline uint16_t getTimeout(void) { return io_timeout; }

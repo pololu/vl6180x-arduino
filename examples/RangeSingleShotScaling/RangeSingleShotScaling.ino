@@ -32,9 +32,7 @@ void loop()
   Serial.print(sensor.getScaling());
   Serial.print("x) ");
 
-  // Multiply raw range value by scaling factor to get
-  // measurement in mm regardless of scaling setting.
-  Serial.print(sensor.readRangeSingle() * sensor.getScaling());
+  Serial.print(sensor.readRangeSingleMillimeters());
   if (sensor.timeoutOccurred()) { Serial.print(" TIMEOUT"); }
 
   Serial.println();

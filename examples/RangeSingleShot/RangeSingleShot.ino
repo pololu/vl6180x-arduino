@@ -20,7 +20,7 @@ void setup()
 
 void loop() 
 { 
-  Serial.print(sensor.readRangeSingle());
+  Serial.print(sensor.readRangeSingleMillimeters());
   if (sensor.timeoutOccurred()) { Serial.print(" TIMEOUT"); }
   
   Serial.println();

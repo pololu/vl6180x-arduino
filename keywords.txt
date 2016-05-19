@@ -12,12 +12,14 @@ readReg32Bit	KEYWORD2
 setScaling	KEYWORD2
 getScaling	KEYWORD2
 readRangeSingle	KEYWORD2
+readRangeSingleMillimeters	KEYWORD2
 readAmbientSingle	KEYWORD2
 startRangeContinuous	KEYWORD2
 startAmbientContinuous	KEYWORD2
 startInterleavedContinuous	KEYWORD2
 stopContinuous	KEYWORD2
 readRangeContinuous	KEYWORD2
+readRangeContinuousMillimeters	KEYWORD2
 readAmbientContinuous	KEYWORD2
 setTimeout	KEYWORD2
 getTimeout	KEYWORD2

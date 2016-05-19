@@ -1,7 +1,7 @@
 # VL6180X library for Arduino
 
-Version: 1.1.0<br>
-Release date: 2016 May 12<br>
+Version: 1.2.0<br>
+Release date: 2016 May 18<br>
 [www.pololu.com](https://www.pololu.com/)
 
 ## Summary
@@ -107,7 +107,10 @@ Several example sketches are available that show how to use the library. You can
   Returns the current range scaling factor.
 
 * `uint8_t readRangeSingle(void)`<br>
-  Performs a single-shot ranging measurement and returns the reading (distance in millimeters).
+  Performs a single-shot ranging measurement and returns the raw reading.
+
+* `uint16_t readRangeSingleMillimeters(void)`<br>
+  Performs a single-shot ranging measurement and returns the reading in millimeters, taking the range scaling setting into account.
 
 * `uint16_t readAmbientSingle(void)`<br>
   Performs a single-shot ambient light measurement and returns the reading.
@@ -129,8 +132,11 @@ Several example sketches are available that show how to use the library. You can
   Stops continuous mode.
 
 * `uint8_t readRangeContinuous(void)`<br>
-  Returns a range reading when continuous mode is active (distance in millimeters).
+  Returns a raw range reading when continuous mode is active.
 
+* `uint16_t readRangeContinuousMillimeters(void)`<br>
+  Returns a range reading in millimeters, taking the range scaling setting into account, when continuous mode is active.
+  
 * `uint16_t readAmbientContinuous(void)`<br>
   Returns an ambient light reading when continuous mode is active.
 
@@ -145,6 +151,7 @@ Several example sketches are available that show how to use the library. You can
 
 ## Version history
 
+* 1.2.0 (2016 May 18): Added functions for reading range in millimeters, taking range scaling factor into account. Changed example sketches to use these functions.
 * 1.1.0 (2016 May 12): Added functions to set range scaling factor and example sketch to demonstrate scaling.
 * 1.0.1 (2016 Mar 14): Added missing `Serial.begin()` to examples and changed `configureDefault()` to reset some additional registers to power-on defaults.
 * 1.0.0 (2015 Sep 24): Original release.
