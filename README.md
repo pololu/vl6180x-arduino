@@ -2,6 +2,7 @@
 
 Version: 1.2.0<br>
 Release date: 2016 May 18<br>
+[![Build Status](https://travis-ci.org/pololu/vl6180x-arduino.svg?branch=master)](https://travis-ci.org/pololu/vl6180x-arduino)<br/>
 [www.pololu.com](https://www.pololu.com/)
 
 ## Summary
