@@ -2,6 +2,7 @@
 #define VL6180X_h
 
 #include <Arduino.h>
+#include <Wire.h>
 
 class VL6180X
 {
@@ -87,7 +88,7 @@ class VL6180X
 
     void setAddress(uint8_t new_addr);
 
-    void init(void);
+    void init(TwoWire &theWire = Wire);
 
     void configureDefault(void);
 
@@ -119,6 +120,7 @@ class VL6180X
     bool timeoutOccurred(void);
 
   private:
+    TwoWire *wire;
     uint8_t address;
     uint8_t scaling;
     uint8_t ptp_offset;
