@@ -74,8 +74,8 @@ Several example sketches are available that show how to use the library. You can
 * `void setAddress(uint8_t new_addr)`<br>
   Changes the I&sup2;C slave device address of the VL6180X to the given value (7-bit).
 
-* `void init(void)`<br>
-  Loads required settings onto the VL6180X to initialize the sensor.
+* `void init(TwoWire &theWire)`<br>
+  Loads required settings onto the VL6180X to initialize the sensor. If no arguments are provide the two wire interface set to use Wire.  The two wire interface can be changed to something other than the default Wire (for example, Wire1, Wire2 or Wire3) 
 
 * `void configureDefault(void)`<br>
   Configures some settings for the sensor's default behavior. See the comments in VL6180X.cpp for a full explanation of the settings.
