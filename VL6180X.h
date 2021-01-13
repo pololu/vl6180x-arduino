@@ -90,6 +90,7 @@ class VL6180X
     TwoWire * getBus() { return bus; }
 
     void setAddress(uint8_t new_addr);
+    uint8_t getAddress() { return address; }
 
     void init();
 

@@ -70,14 +70,17 @@ Several example sketches are available that show how to use the library. You can
 * `VL6180X(void)`<br>
   Constructor.
 
-* void setBus(TwoWire * bus)
+* `void setBus(TwoWire * bus)`<br>
   Configures this object to use the specified I&sup2;C bus. `bus` should be a pointer to a `TwoWire` object; the default bus is `Wire`, which is typically the first or only I&sup2;C bus on an Arduino. If your Arduino has more than one I&sup2;C bus and you have the VL6180X connected to the second bus, which is typically called `Wire1`, you can call `sensor.setBus(&Wire1);`.
 
-* TwoWire * getBus()
+* `TwoWire * getBus()`<br>
   Returns a pointer to the I&sup2;C bus this object is using.
 
 * `void setAddress(uint8_t new_addr)`<br>
   Changes the I&sup2;C slave device address of the VL6180X to the given value (7-bit).
+
+* `uint8_t getAddress()`<br>
+  Returns the current I&sup2;C address.
 
 * `void init(TwoWire &theWire)`<br>
   Loads required settings onto the VL6180X to initialize the sensor.
@@ -157,7 +160,7 @@ Several example sketches are available that show how to use the library. You can
 
 ## Version history
 
-* 1.3.0 (2021 Jan 12): Added support for alternative I²C buses (thanks mjs513). Fixed some minor code and documentation issues.
+* 1.3.0 (2021 Jan 12): Added support for alternative I²C buses (thanks mjs513) and `getAddress()`. Fixed some minor code and documentation issues.
 * 1.2.0 (2016 May 18): Added functions for reading range in millimeters, taking range scaling factor into account. Changed example sketches to use these functions.
 * 1.1.0 (2016 May 12): Added functions to set range scaling factor and example sketch to demonstrate scaling.
 * 1.0.1 (2016 Mar 14): Added missing `Serial.begin()` to examples and changed `configureDefault()` to reset some additional registers to power-on defaults.
