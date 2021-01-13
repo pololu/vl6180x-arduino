@@ -44,8 +44,8 @@ void VL6180X::init()
     writeReg(0x208, 0x01);
     writeReg(0x096, 0x00);
     writeReg(0x097, 0xFD); // RANGE_SCALER = 253
-    writeReg(0x0E3, 0x00);
-    writeReg(0x0E4, 0x04);
+    writeReg(0x0E3, 0x01);
+    writeReg(0x0E4, 0x03);
     writeReg(0x0E5, 0x02);
     writeReg(0x0E6, 0x01);
     writeReg(0x0E7, 0x03);
@@ -112,7 +112,6 @@ void VL6180X::configureDefault(void)
   writeReg(SYSRANGE__VHV_REPEAT_RATE, 0xFF);
 
   // sysals__integration_period = 99 (100 ms)
-  // AN4545 incorrectly recommends writing to register 0x040; 0x63 should go in the lower byte, which is register 0x041.
   writeReg16Bit(SYSALS__INTEGRATION_PERIOD, 0x0063);
 
   // sysrange__vhv_recalibrate = 1 (manually trigger a VHV recalibration)
