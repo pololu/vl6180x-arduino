@@ -118,7 +118,7 @@ Several example sketches are available that show how to use the library. You can
 * `void startRangeContinuous(uint16_t period)`<br>
   Starts continuous ranging measurements with the given period in milliseconds (10 ms resolution; defaults to 100 ms if not specified).
 
-  In all continuous modes, the period must be greater than the time it takes to perform the measurement(s). See section 2.4.4 ("Continuous mode limits") in the datasheet for details.
+  In all continuous modes, the period must be greater than the time it takes to perform the measurement(s). See section "Continuous mode limits" in the datasheet for details.
 
 * `void startAmbientContinuous(uint16_t period)`<br>
   Starts continuous ambient light measurements with the given period in milliseconds (10 ms resolution; defaults to 500 ms if not specified).
@@ -136,7 +136,7 @@ Several example sketches are available that show how to use the library. You can
 
 * `uint16_t readRangeContinuousMillimeters(void)`<br>
   Returns a range reading in millimeters, taking the range scaling setting into account, when continuous mode is active.
-  
+
 * `uint16_t readAmbientContinuous(void)`<br>
   Returns an ambient light reading when continuous mode is active.
 

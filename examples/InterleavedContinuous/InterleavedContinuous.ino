@@ -7,13 +7,13 @@ asynchronously)".
 In order to attain a faster update rate (10 Hz), the max
 convergence time for ranging and integration time for
 ambient light measurement are reduced from the normally
-recommended defaults. See section 2.4.4 ("Continuous mode
-limits") and Table 6 ("Interleaved mode limits (10 Hz
-operation)") in the VL6180X datasheet for more details.
+recommended defaults. See the section "Continuous mode
+limits" and the table "Interleaved mode limits (10 Hz
+operation)" in the VL6180X datasheet for more details.
 
 Raw ambient light readings can be converted to units of lux
-using the equation in datasheet section 2.13.4 ("ALS count
-to lux conversion").
+using the equation in datasheet section "ALS count
+to lux conversion".
 
 Example: A VL6180X gives an ambient light reading of 613
 with the default gain of 1 and an integration period of
@@ -39,8 +39,8 @@ void setup()
 
   // Reduce range max convergence time and ALS integration
   // time to 30 ms and 50 ms, respectively, to allow 10 Hz
-  // operation (as suggested by Table 6 ("Interleaved mode
-  // limits (10 Hz operation)") in the datasheet).
+  // operation (as suggested by table "Interleaved mode
+  // limits (10 Hz operation)" in the datasheet).
   sensor.writeReg(VL6180X::SYSRANGE__MAX_CONVERGENCE_TIME, 30);
   sensor.writeReg16Bit(VL6180X::SYSALS__INTEGRATION_PERIOD, 50);
 

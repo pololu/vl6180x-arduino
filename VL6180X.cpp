@@ -29,8 +29,8 @@ void VL6180X::setAddress(uint8_t new_addr)
   address = new_addr;
 }
 
-// Initialize sensor with settings from ST application note AN4545, section 9 -
-// "Mandatory : private registers"
+// Initialize sensor with settings from ST application note AN4545, section
+// "SR03 settings" - "Mandatory : private registers"
 void VL6180X::init()
 {
   // Store part-to-part range offset so it can be adjusted if scaling is changed
@@ -105,7 +105,7 @@ void VL6180X::configureDefault(void)
   // readout__averaging_sample_period = 48
   writeReg(READOUT__AVERAGING_SAMPLE_PERIOD, 0x30);
 
-  // sysals__analogue_gain_light = 6 (ALS gain = 1 nominal, actually 1.01 according to Table 14 in datasheet)
+  // sysals__analogue_gain_light = 6 (ALS gain = 1 nominal, actually 1.01 according to table "Actual gain values" in datasheet)
   writeReg(SYSALS__ANALOGUE_GAIN, 0x46);
 
   // sysrange__vhv_repeat_rate = 255 (auto Very High Voltage temperature recalibration after every 255 range measurements)
@@ -277,7 +277,7 @@ uint16_t VL6180X::readAmbientSingle()
 // (10 ms resolution; defaults to 100 ms if not specified).
 //
 // The period must be greater than the time it takes to perform a
-// measurement. See section 2.4.4 ("Continuous mode limits") in the datasheet
+// measurement. See section "Continuous mode limits" in the datasheet
 // for details.
 void VL6180X::startRangeContinuous(uint16_t period)
 {
@@ -292,7 +292,7 @@ void VL6180X::startRangeContinuous(uint16_t period)
 // (10 ms resolution; defaults to 500 ms if not specified).
 //
 // The period must be greater than the time it takes to perform a
-// measurement. See section 2.4.4 ("Continuous mode limits") in the datasheet
+// measurement. See section "Continuous mode limits" in the datasheet
 // for details.
 void VL6180X::startAmbientContinuous(uint16_t period)
 {
@@ -311,7 +311,7 @@ void VL6180X::startAmbientContinuous(uint16_t period)
 // continuous modes simultaneously (i.e. asynchronously)".
 //
 // The period must be greater than the time it takes to perform both
-// measurements. See section 2.4.4 ("Continuous mode limits") in the datasheet
+// measurements. See section "Continuous mode limits" in the datasheet
 // for details.
 void VL6180X::startInterleavedContinuous(uint16_t period)
 {
