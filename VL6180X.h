@@ -84,13 +84,16 @@ class VL6180X
 
     uint8_t last_status; // status of last I2C transmission
 
-    VL6180X(void);
+    VL6180X();
+
+    void setBus(TwoWire * bus) { this->bus = bus; }
+    TwoWire * getBus() { return bus; }
 
     void setAddress(uint8_t new_addr);
 
-    void init(TwoWire &theWire = Wire);
+    void init();
 
-    void configureDefault(void);
+    void configureDefault();
 
     void writeReg(uint16_t reg, uint8_t value);
     void writeReg16Bit(uint16_t reg, uint16_t value);
@@ -100,27 +103,27 @@ class VL6180X
     uint32_t readReg32Bit(uint16_t reg);
 
     void setScaling(uint8_t new_scaling);
-    inline uint8_t getScaling(void) { return scaling; }
+    inline uint8_t getScaling() { return scaling; }
 
-    uint8_t readRangeSingle(void);
-    inline uint16_t readRangeSingleMillimeters(void) { return (uint16_t)scaling * readRangeSingle(); }
-    uint16_t readAmbientSingle(void);
+    uint8_t readRangeSingle();
+    inline uint16_t readRangeSingleMillimeters() { return (uint16_t)scaling * readRangeSingle(); }
+    uint16_t readAmbientSingle();
 
     void startRangeContinuous(uint16_t period = 100);
     void startAmbientContinuous(uint16_t period = 500);
     void startInterleavedContinuous(uint16_t period = 500);
     void stopContinuous();
 
-    uint8_t readRangeContinuous(void);
-    inline uint16_t readRangeContinuousMillimeters(void) { return (uint16_t)scaling * readRangeContinuous(); }
-    uint16_t readAmbientContinuous(void);
+    uint8_t readRangeContinuous();
+    inline uint16_t readRangeContinuousMillimeters() { return (uint16_t)scaling * readRangeContinuous(); }
+    uint16_t readAmbientContinuous();
 
     inline void setTimeout(uint16_t timeout) { io_timeout = timeout; }
-    inline uint16_t getTimeout(void) { return io_timeout; }
-    bool timeoutOccurred(void);
+    inline uint16_t getTimeout() { return io_timeout; }
+    bool timeoutOccurred();
 
   private:
-    TwoWire *wire;
+    TwoWire *bus;
     uint8_t address;
     uint8_t scaling;
     uint8_t ptp_offset;

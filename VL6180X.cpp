@@ -12,8 +12,9 @@ static uint16_t const ScalerValues[] = {0, 253, 127, 84};
 
 // Constructors ////////////////////////////////////////////////////////////////
 
-VL6180X::VL6180X(void)
-  : address(ADDRESS_DEFAULT)
+VL6180X::VL6180X()
+  : bus(&Wire)
+  , address(ADDRESS_DEFAULT)
   , scaling(0)
   , ptp_offset(0)
   , io_timeout(0) // no timeout
@@ -31,11 +32,8 @@ void VL6180X::setAddress(uint8_t new_addr)
 
 // Initialize sensor with settings from ST application note AN4545, section
 // "SR03 settings" - "Mandatory : private registers"
-void VL6180X::init(TwoWire &theWire)
+void VL6180X::init()
 {
-  wire = &theWire;
-  wire -> begin();
-
   // Store part-to-part range offset so it can be adjusted if scaling is changed
   ptp_offset = readReg(SYSRANGE__PART_TO_PART_RANGE_OFFSET);
 
@@ -101,7 +99,7 @@ void VL6180X::init(TwoWire &theWire)
 // Note that this function does not set up GPIO1 as an interrupt output as
 // suggested, though you can do so by calling:
 // writeReg(SYSTEM__MODE_GPIO1, 0x10);
-void VL6180X::configureDefault(void)
+void VL6180X::configureDefault()
 {
   // "Recommended : Public registers"
 
@@ -148,35 +146,35 @@ void VL6180X::configureDefault(void)
 // Writes an 8-bit register
 void VL6180X::writeReg(uint16_t reg, uint8_t value)
 {
-  wire -> beginTransmission(address);
-  wire -> write((reg >> 8) & 0xff);  // reg high byte
-  wire -> write(reg & 0xff);         // reg low byte
-  wire -> write(value);
-  last_status = wire -> endTransmission();
+  bus->beginTransmission(address);
+  bus->write((reg >> 8) & 0xFF); // reg high byte
+  bus->write( reg       & 0xFF); // reg low byte
+  bus->write(value);
+  last_status = bus->endTransmission();
 }
 
 // Writes a 16-bit register
 void VL6180X::writeReg16Bit(uint16_t reg, uint16_t value)
 {
-  wire -> beginTransmission(address);
-  wire -> write((reg >> 8) & 0xff);  // reg high byte
-  wire -> write(reg & 0xff);         // reg low byte
-  wire -> write((value >> 8) & 0xff);  // value high byte
-  wire -> write(value & 0xff);         // value low byte
-  last_status = wire -> endTransmission();
+  bus->beginTransmission(address);
+  bus->write((reg >> 8) & 0xFF); // reg high byte
+  bus->write( reg       & 0xFF); // reg low byte
+  bus->write((value >> 8) & 0xFF); // value high byte
+  bus->write( value       & 0xFF); // value low byte
+  last_status = bus->endTransmission();
 }
 
 // Writes a 32-bit register
 void VL6180X::writeReg32Bit(uint16_t reg, uint32_t value)
 {
-  wire -> beginTransmission(address);
-  wire -> write((reg >> 8) & 0xff);  // reg high byte
-  wire -> write(reg & 0xff);         // reg low byte
-  wire -> write((value >> 24) & 0xff); // value highest byte
-  wire -> write((value >> 16) & 0xff);
-  wire -> write((value >> 8) & 0xff);
-  wire -> write(value & 0xff);         // value lowest byte
-  last_status = wire -> endTransmission();
+  bus->beginTransmission(address);
+  bus->write((reg >> 8) & 0xFF); // reg high byte
+  bus->write( reg       & 0xFF); // reg low byte
+  bus->write((value >> 24) & 0xFF); // value highest byte
+  bus->write((value >> 16) & 0xFF);
+  bus->write((value >>  8) & 0xFF);
+  bus->write( value        & 0xFF); // value lowest byte
+  last_status = bus->endTransmission();
 }
 
 // Reads an 8-bit register
@@ -184,13 +182,13 @@ uint8_t VL6180X::readReg(uint16_t reg)
 {
   uint8_t value;
 
-  wire -> beginTransmission(address);
-  wire -> write((reg >> 8) & 0xff);  // reg high byte
-  wire -> write(reg & 0xff);         // reg low byte
-  last_status = wire -> endTransmission();
+  bus->beginTransmission(address);
+  bus->write((reg >> 8) & 0xFF); // reg high byte
+  bus->write( reg       & 0xFF); // reg low byte
+  last_status = bus->endTransmission();
 
-  wire -> requestFrom(address, (uint8_t)1);
-  value = wire -> read();
+  bus->requestFrom(address, (uint8_t)1);
+  value = bus->read();
 
   return value;
 }
@@ -200,14 +198,14 @@ uint16_t VL6180X::readReg16Bit(uint16_t reg)
 {
   uint16_t value;
 
-  wire -> beginTransmission(address);
-  wire -> write((reg >> 8) & 0xff);  // reg high byte
-  wire -> write(reg & 0xff);         // reg low byte
-  last_status = wire -> endTransmission();
+  bus->beginTransmission(address);
+  bus->write((reg >> 8) & 0xFF); // reg high byte
+  bus->write( reg       & 0xFF); // reg low byte
+  last_status = bus->endTransmission();
 
-  wire -> requestFrom(address, (uint8_t)2);
-  value = (uint16_t)wire -> read() << 8; // value high byte
-  value |= wire -> read();               // value low byte
+  bus->requestFrom(address, (uint8_t)2);
+  value  = (uint16_t)bus->read() << 8; // value high byte
+  value |=           bus->read();      // value low byte
 
   return value;
 }
@@ -217,16 +215,16 @@ uint32_t VL6180X::readReg32Bit(uint16_t reg)
 {
   uint32_t value;
 
-  wire -> beginTransmission(address);
-  wire -> write((reg >> 8) & 0xff);  // reg high byte
-  wire -> write(reg & 0xff);         // reg low byte
-  last_status = wire -> endTransmission();
+  bus->beginTransmission(address);
+  bus->write((reg >> 8) & 0xFF); // reg high byte
+  bus->write( reg       & 0xFF); // reg low byte
+  last_status = bus->endTransmission();
 
-  wire -> requestFrom(address, (uint8_t)4);
-  value = (uint32_t)wire -> read() << 24;  // value highest byte
-  value |= (uint32_t)wire -> read() << 16;
-  value |= (uint16_t)wire -> read() << 8;
-  value |= wire -> read();                 // value lowest byte
+  bus->requestFrom(address, (uint8_t)4);
+  value  = (uint32_t)bus->read() << 24; // value highest byte
+  value |= (uint32_t)bus->read() << 16;
+  value |= (uint16_t)bus->read() << 8;
+  value |=           bus->read();       // value lowest byte
 
   return value;
 }
