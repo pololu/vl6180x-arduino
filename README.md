@@ -82,7 +82,7 @@ Several example sketches are available that show how to use the library. You can
 * `uint8_t getAddress()`<br>
   Returns the current I&sup2;C address.
 
-* `void init(TwoWire &theWire)`<br>
+* `void init()`<br>
   Loads required settings onto the VL6180X to initialize the sensor.
 
 * `void configureDefault(void)`<br>
