@@ -1,7 +1,7 @@
 # VL6180X library for Arduino
 
-Version: 1.3.0<br>
-Release date: 2021 Jan 12<br>
+Version: 1.3.1<br>
+Release date: 2021 Jun 29<br>
 [www.pololu.com](https://www.pololu.com/)
 
 ## Summary
@@ -159,7 +159,7 @@ Several example sketches are available that show how to use the library. You can
   Indicates whether a read timeout has occurred since the last call to `timeoutOccurred()`.
 
 ## Version history
-
+* 1.3.1 (2021 Jun 29): Fixed compilation errors with Arduino mbed core.
 * 1.3.0 (2021 Jan 12): Added support for alternative I²C buses (thanks mjs513) and `getAddress()`. Fixed some minor code and documentation issues.
 * 1.2.0 (2016 May 18): Added functions for reading range in millimeters, taking range scaling factor into account. Changed example sketches to use these functions.
 * 1.1.0 (2016 May 12): Added functions to set range scaling factor and example sketch to demonstrate scaling.
