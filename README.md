@@ -158,6 +158,9 @@ Several example sketches are available that show how to use the library. You can
 * `bool timeoutOccurred(void)`<br>
   Indicates whether a read timeout has occurred since the last call to `timeoutOccurred()`.
 
+* `uint8_t readRangeStatus()`<br>
+  Get ranging success/error status code (Use it before using a measurement).
+
 ## Version history
 * 1.3.1 (2021 Jun 29): Fixed compilation errors with Arduino mbed core.
 * 1.3.0 (2021 Jan 12): Added support for alternative I²C buses (thanks mjs513) and `getAddress()`. Fixed some minor code and documentation issues.
