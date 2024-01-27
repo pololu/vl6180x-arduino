@@ -127,7 +127,7 @@ class VL6180X
     TwoWire *bus;
     uint8_t address;
     uint8_t scaling;
-    uint8_t ptp_offset;
+    int8_t ptp_offset;
     uint16_t io_timeout;
     bool did_timeout;
 };
