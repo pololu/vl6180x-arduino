@@ -343,7 +343,9 @@ void VL6180X::stopContinuous()
 uint8_t VL6180X::readRangeContinuous()
 {
   uint16_t millis_start = millis();
-  while ((readReg(RESULT__INTERRUPT_STATUS_GPIO) & 0x04) == 0)
+  // While computation is not finished
+  // only watching if bits 2:0 (mask 0x07) are set to 0b100 (0x04)
+  while ((readReg(RESULT__INTERRUPT_STATUS_GPIO) & 0x07) != 0x04)
   {
     if (io_timeout > 0 && ((uint16_t)millis() - millis_start) > io_timeout)
     {
@@ -364,7 +366,9 @@ uint8_t VL6180X::readRangeContinuous()
 uint16_t VL6180X::readAmbientContinuous()
 {
   uint16_t millis_start = millis();
-  while ((readReg(RESULT__INTERRUPT_STATUS_GPIO) & 0x20) == 0)
+  // While computation is not finished
+  // only watching if bits 5:3 (mask 0x38) are set to 0b100 (0x20)
+  while ((readReg(RESULT__INTERRUPT_STATUS_GPIO) & 0x38) != 0x20)
   {
     if (io_timeout > 0 && ((uint16_t)millis() - millis_start) > io_timeout)
     {
