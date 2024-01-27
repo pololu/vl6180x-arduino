@@ -4,6 +4,21 @@
 #include <Arduino.h>
 #include <Wire.h>
 
+#define VL6180X_ERROR_NONE          0   // No error; Valid measurement
+#define VL6180X_ERROR_SYSERR_1      1   // System error; VCSEL Continuity Test; No measurement possible
+#define VL6180X_ERROR_SYSERR_2      2   // System error; VCSEL Watchdog Test; No measurement possible
+#define VL6180X_ERROR_SYSERR_3      3   // System error; VCSEL Watchdog; No measurement possible
+#define VL6180X_ERROR_SYSERR_4      4   // System error; PLL1 Lock; No measurement possible
+#define VL6180X_ERROR_SYSERR_5      5   // System error; PLL2 Lock; No measurement possible
+#define VL6180X_ERROR_ECEFAIL       6   // Early Convergence Estimate; Check fail
+#define VL6180X_ERROR_NOCONVERGE    7   // Max convergence; System didn't converge before the specified time limit
+#define VL6180X_ERROR_RANGEIGNORE   8   // Range ignore; No Target Ignore; Ignore threshold check failed
+#define VL6180X_ERROR_SNR           11  // Max Signal To Noise Ratio; Ambient conditions too high
+#define VL6180X_ERROR_RAWUFLOW      12  // Raw Range underflow; Target too close
+#define VL6180X_ERROR_RAWOFLOW      13  // Raw Range overflow; Target too far
+#define VL6180X_ERROR_RANGEUFLOW    14  // Range underflow; Target too close
+#define VL6180X_ERROR_RANGEOFLOW    15  // Range overflow; Target too far
+
 class VL6180X
 {
   public:
@@ -122,6 +137,8 @@ class VL6180X
     inline void setTimeout(uint16_t timeout) { io_timeout = timeout; }
     inline uint16_t getTimeout() { return io_timeout; }
     bool timeoutOccurred();
+
+    uint8_t readRangeStatus();
 
   private:
     TwoWire *bus;

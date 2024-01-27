@@ -391,3 +391,10 @@ bool VL6180X::timeoutOccurred()
   did_timeout = false;
   return tmp;
 }
+
+// Get ranging success/error status code (Use it before using a measurement)
+// Return error code; One of possible VL6180X_ERROR_* values
+uint8_t VL6180X::readRangeStatus()
+{
+  return (readReg(RESULT__RANGE_STATUS) >> 4);
+}
