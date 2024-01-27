@@ -1,7 +1,5 @@
 # VL6180X library for Arduino
 
-Version: 1.3.1<br>
-Release date: 2021 Jun 29<br>
 [www.pololu.com](https://www.pololu.com/)
 
 ## Summary
@@ -162,9 +160,10 @@ Several example sketches are available that show how to use the library. You can
   Get ranging success/error status code (Use it before using a measurement).
 
 ## Version history
-* 1.3.1 (2021 Jun 29): Fixed compilation errors with Arduino mbed core.
-* 1.3.0 (2021 Jan 12): Added support for alternative I²C buses (thanks mjs513) and `getAddress()`. Fixed some minor code and documentation issues.
-* 1.2.0 (2016 May 18): Added functions for reading range in millimeters, taking range scaling factor into account. Changed example sketches to use these functions.
-* 1.1.0 (2016 May 12): Added functions to set range scaling factor and example sketch to demonstrate scaling.
-* 1.0.1 (2016 Mar 14): Added missing `Serial.begin()` to examples and changed `configureDefault()` to reset some additional registers to power-on defaults.
-* 1.0.0 (2015 Sep 24): Original release.
+* 1.4.0 (2024-01-26): Fixed issue with scaling factor being applied to negative offsets improperly. Improved timeout behavior and added `readRangeStatus()` (thanks celestinmetral and ysard).
+* 1.3.1 (2021-06-29): Fixed compilation errors with Arduino mbed core.
+* 1.3.0 (2021-01-12): Added support for alternative I²C buses (thanks mjs513) and `getAddress()`. Fixed some minor code and documentation issues.
+* 1.2.0 (2016-05-18): Added functions for reading range in millimeters, taking range scaling factor into account. Changed example sketches to use these functions.
+* 1.1.0 (2016-05-12): Added functions to set range scaling factor and example sketch to demonstrate scaling.
+* 1.0.1 (2016-03-14): Added missing `Serial.begin()` to examples and changed `configureDefault()` to reset some additional registers to power-on defaults.
+* 1.0.0 (2015-09-24): Original release.
