@@ -27,7 +27,9 @@ VL6180X::VL6180X()
 void VL6180X::setAddress(uint8_t new_addr)
 {
   writeReg(I2C_SLAVE__DEVICE_ADDRESS, new_addr & 0x7F);
-  address = new_addr;
+  if (last_status == 0) {
+    address = new_addr;
+  }
 }
 
 // Initialize sensor with settings from ST application note AN4545, section
